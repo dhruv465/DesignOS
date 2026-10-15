@@ -31,7 +31,7 @@
 .dark { color-scheme: dark; }
 
 * { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; scroll-padding-top: 84px; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: 84px; overflow-x: clip; }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 400 1.0625rem/1.5 var(--sans); -webkit-font-smoothing: antialiased; overflow-x: clip; transition: background-color 0.4s; }
 h1, h2, h3, p, figure, dl, dd, ol, ul, pre { margin: 0; }
 ol, ul { padding: 0; list-style: none; }
