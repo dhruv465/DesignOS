@@ -39,6 +39,8 @@ Good references deserve better than a forgotten bookmark. DesignOS brings images
 
 Your saved library lives on your Mac. Browsing and organising saved files works offline; web discovery and live pages use the internet.
 
+**Website:** [DesignOS for Mac](https://dhruv465.github.io/DesignOS/)
+
 ## From inspiration to direction
 
 | | What you can do |
