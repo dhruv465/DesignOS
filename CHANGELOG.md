@@ -1,5 +1,11 @@
 # DesignOS releases
 
+## Website and distribution — 2026-10-16
+
+- Added interactive DesignOS website on GitHub Pages, with public downloads, privacy, support and browser setup.
+- Added branded Terminal installer output; website serves the current script while downloading existing release binaries.
+- Desktop release remains 0.6.0; application and extension release assets unchanged.
+
 ## 0.6.0
 
 Automatic X/Instagram sync, full offline X Articles, playable MP4s, ordered carousels, bulk imports, redesigned browser companion and DesignOS branding.

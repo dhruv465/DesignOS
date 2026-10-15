@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DesignOS — A local-first design reference library for Mac</title>
+<meta name="description" content="Save images, videos, pages and posts into one searchable library on your Mac. Find references by text or colour, compose boards in Spaces, and give AI coding tools visual context.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#fafaf9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://dhruv465.github.io/DesignOS/">
+<link rel="icon" href="assets/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="DesignOS">
+<meta property="og:title" content="DesignOS — Save what catches your eye.">
+<meta property="og:description" content="A local-first design reference library for your Mac.">
+<meta property="og:url" content="https://dhruv465.github.io/DesignOS/">
+<meta property="og:image" content="https://dhruv465.github.io/DesignOS/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"DesignOS","operatingSystem":"macOS (Apple Silicon)","applicationCategory":"DesignApplication","description":"A local-first design reference library for your Mac.","downloadUrl":"https://github.com/dhruv465/DesignOS/releases/latest/download/DesignOS-arm64.dmg","image":"https://dhruv465.github.io/DesignOS/assets/icon-512.png"}</script>
+<script>document.documentElement.classList.add('js'); try { const t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t } catch {}</script>
+<link rel="stylesheet" href="styles.css">
+<script src="app.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav">
+  <a class="brand" href="#top" aria-label="DesignOS home"><img src="assets/icon-128.png" width="28" height="28" alt=""><span>DesignOS</span></a>
+  <nav class="seg" aria-label="Sections">
+    <span class="seg-thumb" aria-hidden="true"></span>
+    <a href="#capture">Capture</a>
+    <a href="#find">Find</a>
+    <a href="#explore">Explore</a>
+    <a href="#spaces">Spaces</a>
+    <a href="#context">AI context</a>
+    <a href="#private">Privacy</a>
+  </nav>
+  <div class="nav-end">
+    <button class="key-btn" type="button" data-open-palette aria-label="Open command menu" aria-keyshortcuts="Meta+K"><kbd>⌘</kbd><kbd>K</kbd><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14M5 16h14"/></svg></button>
+    <a class="btn btn-ink btn-sm" href="#download">Download</a>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- Hero: the folio is the app icon, live. Throw references in, tap it to spill them back out. -->
+<div class="dive">
+<section class="hero" id="top">
+  <div class="hero-copy">
+    <a class="release" href="#capture"><span>New</span> 0.6 — your saves, complete <b aria-hidden="true">→</b></a>
+    <h1>Save what catches <span class="nowrap">your eye.</span></h1>
+    <p class="lede">Find it when it matters. DesignOS gathers images, videos, pages and posts into one searchable library that lives on your Mac.</p>
+    <div class="cta">
+      <a class="btn btn-ink" href="https://github.com/dhruv465/DesignOS/releases/latest/download/DesignOS-arm64.dmg">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19.5h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Download for Mac
+      </a>
+      <a class="btn btn-ghost" href="#capture">See how it works</a>
+    </div>
+    <p class="meta">Apple Silicon · Version <span data-version>0.6.0</span> · No account required</p>
+  </div>
+  <div class="pile" aria-hidden="true" data-cards="meridian:pocket prism:pocket threshold:pocket hours orbit signal cadence specimen botanica phone tidewater">
+    <div class="folio-back"></div>
+    <button class="folio-front" type="button" tabindex="-1" title="Tap to spill your references"></button>
+  </div>
+  <p class="folio-hint" aria-hidden="true"><span>Throw a reference in</span> <small>or tap one</small></p>
+  <p class="dive-line" aria-hidden="true">Step inside.</p>
+  <p class="scroll-cue" aria-hidden="true"><span></span>Scroll</p>
+</section>
+</div>
+
+<!-- The real app -->
+<section class="show dark" aria-labelledby="showcase-title">
+  <div class="show-stage">
+  <header class="sec-head center">
+    <h2 id="showcase-title">A quiet canvas, <em>so your references carry the colour.</em></h2>
+    <p class="sub">System type, hairline borders and glass only where it helps. Light and dark, with the shortcuts you'd expect from a Mac app.</p>
+  </header>
+  <div class="window">
+    <div class="win-bar">
+      <span class="lights" aria-hidden="true"><i></i><i></i><i></i></span>
+      <div class="win-tabs" role="tablist" aria-label="Screenshots">
+        <button role="tab" aria-selected="true" aria-controls="shot-library" id="tab-library">Library</button>
+        <button role="tab" aria-selected="false" aria-controls="shot-spaces" id="tab-spaces">Spaces</button>
+      </div>
+      <span class="lights ghost" aria-hidden="true"><i></i><i></i><i></i></span>
+    </div>
+    <div class="win-body">
+      <img id="shot-library" role="tabpanel" aria-labelledby="tab-library" src="assets/library.png" width="1320" height="900" loading="lazy" alt="DesignOS library: a masonry gallery of design references organised into four collections.">
+      <img id="shot-spaces" role="tabpanel" aria-labelledby="tab-spaces" src="assets/spaces.png" width="1320" height="900" loading="lazy" alt="DesignOS Spaces: a brand direction board with reference images, a headline and a five-colour palette." hidden>
+    </div>
+  </div>
+  <p class="caption">Real screenshots of DesignOS 0.6.0 with original demo artwork.</p>
+  </div>
+</section>
+
+<!-- Statement: lights up word by word as you scroll -->
+<section class="statement" aria-label="Why DesignOS">
+  <div class="statement-stage">
+    <div class="drift" data-clone="prism" style="--x:5%;--y:7%;--w:140px;--d:1.1;--r:-8deg"></div>
+    <div class="drift" data-clone="signal" style="--x:83%;--y:5%;--w:120px;--d:0.7;--r:7deg"></div>
+    <div class="drift" data-clone="botanica" style="--x:85%;--y:73%;--w:150px;--d:1.2;--r:-5deg"></div>
+    <div class="drift" data-clone="meridian" style="--x:7%;--y:75%;--w:116px;--d:0.9;--r:6deg"></div>
+    <div class="drift" data-clone="threshold" style="--x:62%;--y:84%;--w:100px;--d:0.5;--r:-10deg"></div>
+    <div class="drift" data-clone="tidewater" style="--x:30%;--y:83%;--w:96px;--d:1;--r:9deg"></div>
+    <p class="words">Good references deserve better than a forgotten bookmark. <b>Save</b> them as you browse. <b>Find</b> them by what they say or how they look. Turn them into <b>a direction.</b></p>
+  </div>
+</section>
+
+<!-- 01 Capture -->
+<section class="sec" id="capture" aria-labelledby="capture-title">
+  <header class="sec-head">
+    <p class="label"><span>01</span> Capture</p>
+    <h2 id="capture-title">Collect from anywhere. <em>Keep all of it.</em></h2>
+    <p class="sub">Drop in files, paste from the clipboard, take a screenshot or save straight from your browser. Bookmarks and saves from the sites you already use arrive on their own — articles, videos and every slide of a carousel included.</p>
+  </header>
+
+  <div class="capture">
+    <div class="browser">
+      <div class="b-bar">
+        <span class="lights" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="url"><svg viewBox="0 0 16 16" width="11" height="11" aria-hidden="true"><path d="M4.5 7V5a3.5 3.5 0 0 1 7 0v2M3.5 7h9v6.5h-9z" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>lumen.studio/work</span>
+        <span class="ext-icon" title="DesignOS extension"><img src="assets/extension-128.png" width="16" height="16" alt=""></span>
+      </div>
+      <div class="b-page">
+        <div class="b-head"><b>lumen</b><span>Work</span><span>Studio</span><span>Journal</span></div>
+        <p class="b-title">Selected work, 2026</p>
+        <div class="b-shots">
+          <button class="shot" type="button" data-clone="cadence" aria-label="Cadence identity. Open the save menu"></button>
+          <button class="shot" type="button" data-clone="prism" aria-label="Prism material study. Open the save menu"></button>
+          <button class="shot" type="button" data-clone="still" aria-label="Stillwater form study. Open the save menu"></button>
+        </div>
+        <p class="b-hint"><kbd>Right-click</kbd> or tap an image</p>
+      </div>
+    </div>
+    <div class="inbox">
+      <div class="inbox-head"><img src="assets/icon-128.png" width="20" height="20" alt=""><b>Unsorted</b><output class="inbox-n">0</output></div>
+      <ol class="inbox-list" aria-live="polite">
+        <li class="inbox-empty">Saved images land here, ready to sort.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="sync">
+    <div class="sync-row"><span class="dot"></span><b>X bookmarks</b><span>Checked every 2 minutes</span></div>
+    <div class="sync-row"><span class="dot"></span><b>Instagram saves</b><span>Checked every 5 minutes</span></div>
+    <div class="sync-row"><span class="dot"></span><b>Pinterest, LinkedIn, Cosmos</b><span>Saved the moment you save</span></div>
+    <div class="sync-row"><span class="dot"></span><b>Files, clipboard, screenshots</b><span>Drop, paste or capture</span></div>
+  </div>
+
+  <div class="trio">
+    <article><h3>Articles you can read offline</h3><p>X Articles arrive as the article itself — title, cover, text and pictures — and open as a readable page.</p></article>
+    <article><h3>Videos that actually play</h3><p>Saved X and Instagram videos come in as real MP4s, playing in the grid and in detail.</p></article>
+    <article><h3>Carousels, in order</h3><p>Every slide stays together as one reference. Swipe through it, or use the arrow keys.</p></article>
+  </div>
+</section>
+
+<!-- 02 Find: a live demo library -->
+<section class="sec" id="find" aria-labelledby="find-title">
+  <header class="sec-head">
+    <p class="label"><span>02</span> Find</p>
+    <h2 id="find-title">Find it by what it says, <em>or by how it looks.</em></h2>
+    <p class="sub">Search titles, tags and the text inside images. Narrow by colour, collection, source or date. Turn on visual-meaning search when keywords aren't enough — it runs on your Mac.</p>
+  </header>
+
+  <div class="lib">
+    <div class="lib-bar">
+      <label class="search">
+        <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="m16 16 4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <span class="sr-only">Search the demo library</span>
+        <input id="q" type="search" placeholder="Search titles, tags and text in images" autocomplete="off" spellcheck="false" aria-describedby="count">
+        <kbd aria-hidden="true">/</kbd>
+      </label>
+      <div class="swatches" role="group" aria-label="Filter by colour">
+        <button type="button" data-color="red" aria-pressed="false" aria-label="Red" style="--c:#e0483a"></button>
+        <button type="button" data-color="orange" aria-pressed="false" aria-label="Orange" style="--c:#ee8a3c"></button>
+        <button type="button" data-color="yellow" aria-pressed="false" aria-label="Yellow" style="--c:#f2c230"></button>
+        <button type="button" data-color="green" aria-pressed="false" aria-label="Green" style="--c:#5b8a4e"></button>
+        <button type="button" data-color="blue" aria-pressed="false" aria-label="Blue" style="--c:#2f6bd3"></button>
+        <button type="button" data-color="violet" aria-pressed="false" aria-label="Violet" style="--c:#7d62d8"></button>
+        <button type="button" data-color="neutral" aria-pressed="false" aria-label="Neutral" style="--c:#d9d2c3"></button>
+        <button type="button" data-color="dark" aria-pressed="false" aria-label="Dark" style="--c:#16171a"></button>
+      </div>
+    </div>
+    <div class="lib-sub">
+      <div class="chips"><span>Try</span>
+        <button type="button" data-q="pricing">pricing</button>
+        <button type="button" data-q="serif">serif</button>
+        <button type="button" data-q="calm">calm</button>
+        <button type="button" data-q="video">video</button>
+        <button type="button" data-q="tag:logo">tag:logo</button>
+        <button type="button" data-q="color:blue">color:blue</button>
+      </div>
+      <output id="count" aria-live="polite">16 references</output>
+    </div>
+
+    <div class="grid">
+      <figure class="ref" id="ref-tidewater" style="--ar:.8" data-title="Tidewater" data-tags="palette colour color system tones teal sea calm" data-colors="blue dark" data-source="lumen.studio">
+        <div class="art p-tide"><b class="ocr">Tidewater</b><small class="ocr">Colour system · 05 tones</small><div class="pills"><i></i><i></i><i></i><i></i><i></i></div><span class="ft ocr">Read the water.</span></div>
+      </figure>
+      <figure class="ref" id="ref-pricing" style="--ar:1.3333" data-title="Simple pricing" data-tags="pricing web ui interface saas landing page tiers plans" data-colors="violet" data-source="Explore">
+        <div class="art p-price"><div class="bar"><i></i><i></i><i></i></div><b class="ocr">Simple pricing</b><small>Start free. Upgrade when your team does.</small><div class="tiers"><div><span class="ocr">Starter</span><strong>$0</strong><i></i><i></i><u></u></div><div class="hl"><span class="ocr">Studio</span><strong class="ocr">$12</strong><i></i><i></i><u></u></div><div><span class="ocr">Team</span><strong>$29</strong><i></i><i></i><u></u></div></div></div>
+      </figure>
+      <figure class="ref" id="ref-hours" style="--ar:.75" data-title="The small hours" data-tags="editorial serif headline magazine cover warm sun type" data-colors="orange neutral" data-source="x.com">
+        <div class="art p-hours"><i class="sun"></i><small class="lb">Issue 07 — Slow design</small><b class="ocr">Make room for the small hours.</b><small class="ft">Essays on rest, rhythm &amp; craft</small></div>
+      </figure>
+      <figure class="ref" id="ref-orbit" style="--ar:.8" data-title="Orbit" data-tags="3d render planet sphere space object warm" data-colors="orange" data-source="instagram.com">
+        <div class="art p-orbit"><small class="lb">Orbit / object study</small><i class="ring"></i><i class="planet"></i><i class="ring front"></i><small class="ft ocr">Render 04 — terracotta</small></div>
+      </figure>
+      <figure class="ref" id="ref-specimen" style="--ar:.8" data-title="Grotesk specimen" data-tags="type typography specimen font sans grotesk" data-colors="neutral" data-source="pinterest.com">
+        <div class="art p-spec"><small class="lb ocr">Grotesk specimen</small><small class="lr">Nº 12</small><b class="ocr">Aa</b><p><span>Regular</span><span>Medium</span><span>Bold</span></p><small class="ft">ABCDEFGHIJKLM 0123456789</small></div>
+      </figure>
+      <figure class="ref" id="ref-signal" style="--ar:.8" data-title="Signal" data-tags="motion kinetic lines generative video loop" data-colors="dark green" data-source="x.com">
+        <div class="art p-signal"><small class="lb ocr">Kinetic / systems</small><span class="badge">▶ 0:12</span>
+          <svg viewBox="0 0 100 125" preserveAspectRatio="none" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width=".5"><path d="M-5 42C25 12 45 92 105 37"/><path d="M-5 42C25 12 45 92 105 37" transform="translate(0 6)"/><path d="M-5 42C25 12 45 92 105 37" transform="translate(0 12)"/><path d="M-5 42C25 12 45 92 105 37" transform="translate(0 18)"/><path d="M-5 42C25 12 45 92 105 37" transform="translate(0 24)"/><path d="M-5 42C25 12 45 92 105 37" transform="translate(0 30)"/><path d="M-5 42C25 12 45 92 105 37" transform="translate(0 36)"/><path d="M-5 42C25 12 45 92 105 37" transform="translate(0 42)"/><path d="M-5 42C25 12 45 92 105 37" transform="translate(0 48)"/></g></svg>
+          <small class="ft">Motion study · MP4</small></div>
+      </figure>
+      <figure class="ref" id="ref-meridian" style="--ar:1" data-title="Meridian" data-tags="logo brand identity mark monogram carousel" data-colors="blue" data-source="linkedin.com">
+        <div class="art p-mer"><small class="lb">Logo exploration 03</small><span class="badge">1 / 4</span><i class="globe"><i></i></i><b class="ocr">Meridian</b><span class="dots"><i></i><i></i><i></i><i></i></span></div>
+      </figure>
+      <figure class="ref" id="ref-article" style="--ar:.75" data-title="Notes on restraint" data-tags="article essay editorial reading writing serif" data-colors="neutral green" data-source="x.com">
+        <div class="art p-art"><span class="badge">Article</span><small class="lb ocr">@lumen · 6 min read</small><b class="ocr">Notes on restraint</b><p class="lines"><i></i><i></i><i></i><i></i></p><i class="pic"></i><p class="lines"><i></i><i></i><i></i></p></div>
+      </figure>
+      <figure class="ref" id="ref-botanica" style="--ar:.8" data-title="Botanica" data-tags="organic nature leaf illustration calm serif" data-colors="green" data-source="cosmos.so">
+        <div class="art p-bot"><b class="ocr">Botanica</b><small class="lb2">Field guide — vol. 2</small><i class="leaf a"></i><i class="leaf b"></i><i class="leaf c"></i></div>
+      </figure>
+      <figure class="ref" id="ref-dash" style="--ar:1.3333" data-title="Usage dashboard" data-tags="dashboard data chart analytics ui interface dark web" data-colors="dark violet" data-source="Screenshot">
+        <div class="art p-dash"><aside><i></i><i></i><i></i><i></i></aside><small class="k ocr">Revenue</small><b class="ocr">$48.2k</b><small class="up">+12.4%</small><div class="bars"><i style="--h:34%"></i><i style="--h:52%"></i><i style="--h:41%"></i><i style="--h:66%"></i><i style="--h:58%"></i><i style="--h:79%"></i><i style="--h:71%"></i><i style="--h:92%"></i></div></div>
+      </figure>
+      <figure class="ref" id="ref-cadence" style="--ar:.75" data-title="Cadence" data-tags="brand identity pattern stripes logo poster" data-colors="red" data-source="instagram.com">
+        <div class="art p-cad"><b class="ocr">Cadence</b><small class="lb2">Identity system 2026</small><i class="mark"></i><small class="ft ocr">A brand with a pulse.</small></div>
+      </figure>
+      <figure class="ref" id="ref-phone" style="--ar:.6" data-title="Welcome back" data-tags="mobile app ios ui interface onboarding sign in" data-colors="orange" data-source="Clipboard">
+        <div class="art p-phone"><div class="device"><i class="notch"></i><i class="avatar"></i><b class="ocr">Welcome back</b><small>Pick up where you left off.</small><i class="field"></i><i class="field"></i><span class="cta ocr">Continue</span></div></div>
+      </figure>
+      <figure class="ref" id="ref-prism" style="--ar:.8" data-title="Prism" data-tags="3d glass gradient iridescent material render" data-colors="violet blue" data-source="instagram.com">
+        <div class="art p-prism"><small class="lb">Prism / material study</small><i class="orb"></i><small class="ft ocr">Colour, refracted.</small></div>
+      </figure>
+      <figure class="ref" id="ref-form" style="--ar:.75" data-title="Form &amp; function" data-tags="geometric shapes poster exhibition primary" data-colors="yellow red blue" data-source="pinterest.com">
+        <div class="art p-form"><i class="c"></i><i class="sq"></i><i class="tri"></i><i class="bar"></i><b class="ocr">Form &amp; function</b><small class="ft">Exhibition · Hall 3</small></div>
+      </figure>
+      <figure class="ref" id="ref-threshold" style="--ar:.8" data-title="Threshold" data-tags="architecture arch form shapes warm balance" data-colors="yellow orange" data-source="cosmos.so">
+        <div class="art p-thr"><b class="ocr">Threshold</b><small class="lb2">A study in balance</small><i class="a1"></i><i class="a2"></i><i class="a3"></i><i class="a4"></i></div>
+      </figure>
+      <figure class="ref" id="ref-still" style="--ar:.8" data-title="Stillwater" data-tags="form minimal calm stone sculpture balance" data-colors="neutral" data-source="lumen.studio">
+        <div class="art p-still"><b class="ocr">Stillwater</b><small class="lb2">Form study / balance</small><i class="p1"></i><i class="p2"></i><i class="p3"></i></div>
+      </figure>
+    </div>
+    <p class="lib-empty" hidden>Nothing matches. <button type="button" data-clear>Clear search</button></p>
+    <p class="drop-note"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 15V4m0 0L7.5 8.5M12 4l4.5 4.5M5 19.5h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> This library is live. Drop or paste an image anywhere on this page — it joins the grid, and never leaves this tab.</p>
+  </div>
+
+  <div class="facts">
+    <div><b>Text in images</b><span>Apple Vision recognises text in images and video posters, on your Mac.</span></div>
+    <div><b>Visual meaning</b><span>An optional 204 MiB model, downloaded once. Indexing and search run locally.</span></div>
+    <div><b>Search syntax</b><span><code>tag:</code> <code>in:"Collection"</code> <code>color:</code> <code>before:</code> <code>source:</code> — narrow fast without leaving the keyboard.</span></div>
+  </div>
+</section>
+
+<!-- Explore: rows that slide sideways as you scroll -->
+<section class="rail" id="explore" aria-labelledby="rail-title">
+  <div class="rail-stage">
+    <header class="sec-head center">
+      <p class="label"><span>✦</span> Explore</p>
+      <h2 id="rail-title">An endless feed of <em>fresh finds.</em></h2>
+      <p class="sub">Follow the websites you love. DesignOS keeps scrolling into their archives, with no post cap, and one tap saves a find to your library.</p>
+    </header>
+    <div class="rows"><div class="row" data-dir="1"></div><div class="row" data-dir="-1"></div><div class="row" data-dir="1"></div></div>
+  </div>
+</section>
+
+<!-- 03 Spaces -->
+<section class="sec" id="spaces" aria-labelledby="spaces-title">
+  <header class="sec-head">
+    <p class="label"><span>03</span> Spaces</p>
+    <h2 id="spaces-title">Turn references <em>into a direction.</em></h2>
+    <p class="sub">Arrange references, text, shapes and drawings on a canvas. Present the board, or export it as PNG or SVG.</p>
+  </header>
+  <div class="space">
+    <div class="space-top">
+      <span class="pill round" aria-hidden="true">‹</span>
+      <span class="pill title">Lumen — brand direction</span>
+      <span class="space-end"><span class="saved">Saved</span><button class="pill" type="button" data-present><svg viewBox="0 0 16 16" width="11" height="11" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg> Present</button></span>
+    </div>
+    <div class="tools" aria-hidden="true">
+      <i class="on"><svg viewBox="0 0 24 24"><path d="M5 3l14 8-6 1.5L10 19z"/></svg></i>
+      <i><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="9.5" cy="9.5" r="1.5"/><path d="m20 15-4-4-8 9"/></svg></i>
+      <i><svg viewBox="0 0 24 24"><path d="M5 6V4h14v2M12 4v16m-3 0h6"/></svg></i>
+      <i><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/></svg></i>
+      <i><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></svg></i>
+      <i><svg viewBox="0 0 24 24"><path d="M5 19 19 5m0 0h-7m7 0v7"/></svg></i>
+      <i><svg viewBox="0 0 24 24"><path d="m15 4 5 5L9 20H4v-5z"/></svg></i>
+    </div>
+    <div class="board" aria-label="Demo board. Drag the items around." role="group">
+      <div class="board-inner">
+        <div class="item it-text" data-x="96" data-y="44"><small>LUMEN / BRAND DIRECTION</small><p>Warm, unhurried, a little bold.</p></div>
+        <div class="item it-ref" data-x="104" data-y="262" data-r="-2" data-clone="hours" style="width:290px"></div>
+        <div class="item it-ref" data-x="436" data-y="300" data-r="1.5" data-clone="threshold" style="width:250px"></div>
+        <div class="item it-ref" data-x="752" data-y="96" data-r="2" data-clone="specimen" style="width:230px"></div>
+        <div class="item it-note" data-x="1010" data-y="120" data-r="3">Serif headlines, sans for UI. Lots of air between things.</div>
+        <div class="item it-pal" data-x="744" data-y="500"><span><i style="--c:#3b2416"></i><i style="--c:#e8743b"></i><i style="--c:#f0b44c"></i><i style="--c:#f3e6d3"></i><i style="--c:#2f5bd3"></i></span><small>UMBER / EMBER / AMBER / PAPER / INK BLUE</small></div>
+      </div>
+    </div>
+    <div class="zoom" aria-hidden="true"><span>−</span><output>100%</output><span>+</span></div>
+  </div>
+  <p class="caption">Drag anything. Flick it and it carries its momentum.</p>
+</section>
+
+<!-- Details bento -->
+<section class="sec more" id="more" aria-labelledby="more-title">
+  <header class="sec-head">
+    <p class="label">And the details</p>
+    <h2 id="more-title">Small things, <em>done properly.</em></h2>
+  </header>
+  <div class="bento">
+    <article class="tile t-rediscover">
+      <div class="tile-copy"><h3>Rediscover</h3><p>Triage forgotten references one at a time. Swipe right to keep, left to trash, up to file it in a collection.</p></div>
+      <div class="stack" tabindex="0" role="group" aria-label="Rediscover demo. Use the arrow keys to sort the top card." aria-describedby="stack-status">
+        <div class="ref" data-clone="article"></div>
+        <div class="ref" data-clone="botanica"></div>
+        <div class="ref" data-clone="form"></div>
+        <div class="ref" data-clone="orbit"></div>
+        <span class="verdict keep">Keep</span><span class="verdict trash">Trash</span><span class="verdict file">Collection</span>
+      </div>
+      <div class="stack-btns">
+        <button type="button" data-swipe="left" aria-label="Trash">←</button>
+        <output id="stack-status" aria-live="polite">Swipe the card</output>
+        <button type="button" data-swipe="up" aria-label="Add to a collection">↑</button>
+        <button type="button" data-swipe="right" aria-label="Keep">→</button>
+      </div>
+    </article>
+    <article class="tile t-keys">
+      <div class="tile-copy"><h3>Keyboard first</h3><p>Every view is one shortcut away. Press <kbd>⌘</kbd><kbd>K</kbd> — it works here too.</p></div>
+      <dl class="keys">
+        <div><dt><kbd>⌘</kbd><kbd>K</kbd></dt><dd>Command palette</dd></div>
+        <div><dt><kbd>⌘</kbd><kbd>F</kbd></dt><dd>Search</dd></div>
+        <div><dt><kbd>⌘</kbd><kbd>O</kbd></dt><dd>Import files</dd></div>
+        <div><dt><kbd>⌘</kbd><kbd>N</kbd></dt><dd>New collection</dd></div>
+        <div><dt><kbd>⌘</kbd><kbd>1</kbd>–<kbd>4</kbd></dt><dd>Library, Collections, Spaces, Explore</dd></div>
+      </dl>
+    </article>
+    <article class="tile t-libs">
+      <div class="tile-copy"><h3>Collections and libraries</h3><p>Nest collections, add tags and notes, and keep a separate library for each project.</p></div>
+      <div class="folders">
+        <div class="folder"><div class="peek"><i style="--c:#d6402f"></i><i style="--c:#f2c230"></i><i style="--c:#2f5bd3"></i></div><div class="front"><b><i style="--c:#d6402f"></i>Brand &amp; identity</b><small>24 references</small></div></div>
+        <div class="folder"><div class="peek"><i style="--c:#16171a"></i><i style="--c:#cfc6f5"></i><i style="--c:#ffc0a8"></i></div><div class="front"><b><i style="--c:#7d62d8"></i>Web &amp; interfaces</b><small>38 references</small></div></div>
+        <div class="folder"><div class="peek"><i style="--c:#efe6d3"></i><i style="--c:#f3e6d3"></i><i style="--c:#3c5a3a"></i></div><div class="front"><b><i style="--c:#5b8a4e"></i>Type &amp; editorial</b><small>17 references</small></div></div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- 04 AI context -->
+<section class="sec dark" id="context" aria-labelledby="context-title">
+  <div class="inner">
+    <header class="sec-head">
+      <p class="label"><span>04</span> AI context</p>
+      <h2 id="context-title">Show your AI tools <em>what you mean.</em></h2>
+      <p class="sub">Connect an MCP client and your coding assistant can search your library and pull reference images while it builds. The bundled server opens your library read-only.</p>
+    </header>
+    <div class="term">
+      <div class="t-bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span>~/lumen — claude</span><button type="button" class="replay" aria-label="Replay the demo">Replay</button></div>
+      <div class="t-body">
+        <p class="t-user" data-step><span class="caret" aria-hidden="true">&gt;</span> <span class="typed">Find references for a pricing page in my DesignOS library.</span></p>
+        <p class="t-tool" data-step><b>● designos</b> · search_references <span class="dim">(query: "pricing page")</span></p>
+        <p class="dim" data-step>&nbsp;&nbsp;⎿ 3 references · library opened read-only</p>
+        <div class="t-thumbs" data-step>
+          <figure><div data-clone="pricing"></div><figcaption>Simple pricing</figcaption></figure>
+          <figure><div data-clone="dash"></div><figcaption>Usage dashboard</figcaption></figure>
+          <figure><div data-clone="phone"></div><figcaption>Welcome back</figcaption></figure>
+        </div>
+        <p class="t-ai" data-step><b>●</b> Three good starting points: a three-tier layout with the middle plan highlighted, a dark dashboard for the usage strip, and a calm sign-in screen. I'll match the tier cards' spacing and keep the accent on the middle plan.</p>
+      </div>
+    </div>
+    <div class="tool-list">
+      <div><code>search_references</code><span>Text, tags, recognised text, colour and collection filters</span></div>
+      <div><code>get_reference</code><span>One reference, with a larger image</span></div>
+      <div><code>list_collections</code><span>Your collections, nested, with counts</span></div>
+      <div><code>list_tags</code><span>Every tag and how often it's used</span></div>
+    </div>
+    <p class="fine">Settings → AI tools generates the command for Claude Code, or JSON for any MCP client. The server follows your active library and never writes to it.</p>
+  </div>
+</section>
+
+<!-- 05 Privacy -->
+<section class="sec" id="private" aria-labelledby="private-title">
+  <header class="sec-head">
+    <p class="label"><span>05</span> Privacy</p>
+    <h2 id="private-title">Your library is a folder. <em>On your Mac.</em></h2>
+    <p class="sub">References live in plain folders with JSON metadata and a search index you can rebuild. There's no DesignOS account to create, and no DesignOS cloud to trust.</p>
+  </header>
+  <div class="finder" role="img" aria-label="A Finder column view of a DesignOS library: an items folder holding one folder per reference, each with item.json and image files, beside index.db and library.json.">
+    <div class="f-bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><b>Studio Library</b></div>
+    <div class="f-cols">
+      <ul><li class="dir on">Studio Library</li><li class="dir">Client — Lumen</li><li class="dir">Personal</li></ul>
+      <ul><li class="dir on">items</li><li class="file db">index.db</li><li class="file js">library.json</li></ul>
+      <ul><li class="dir on">0b9e…f2c1</li><li class="dir">4d21…a7e0</li><li class="dir">8f3c…19bd</li><li class="dir">c2aa…6e14</li><li class="dir">e71d…03b8</li></ul>
+      <ul><li class="file js on">item.json</li><li class="file im">optimized.webp</li><li class="file im">thumb.webp</li></ul>
+      <pre class="f-preview"><code>{
+  <span>"kind"</span>: "image",
+  <span>"title"</span>: "Tidewater",
+  <span>"sourceUrl"</span>: "https://lumen.studio/work",
+  <span>"note"</span>: "Colours for the spring site",
+  <span>"tags"</span>: ["palette", "calm"],
+  <span>"palette"</span>: [ … ],
+  <span>"files"</span>: [ … ]
+}</code></pre>
+    </div>
+  </div>
+  <div class="facts four">
+    <div><b>No account</b><span>Open the app and start saving. Browsing and organising saved files works offline.</span></div>
+    <div><b>On-device</b><span>Text recognition and optional visual-meaning search run locally on your Mac.</span></div>
+    <div><b>Network on request</b><span>Web imports, Explore and live pages contact source sites. Model downloads use Hugging Face; update checks use GitHub.</span></div>
+    <div><b>Yours to keep</b><span>Back up a library as a ZIP, rebuild its index, or export references and Spaces as PNG or SVG.</span></div>
+  </div>
+</section>
+
+<!-- Download -->
+<section class="sec dark download" id="download" aria-labelledby="download-title">
+  <div class="inner">
+    <div class="dl-icon"><img src="assets/icon-512.png" width="168" height="168" alt="DesignOS app icon"></div>
+    <h2 id="download-title">Start your library.</h2>
+    <p class="sub">For Macs with Apple Silicon. Version <span data-version>0.6.0</span>.</p>
+    <div class="cta">
+      <a class="btn btn-light" href="https://github.com/dhruv465/DesignOS/releases/latest/download/DesignOS-arm64.dmg">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19.5h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Download DMG
+      </a>
+      <a class="btn btn-glass" href="https://github.com/dhruv465/DesignOS/releases/latest/download/DesignOS-arm64.zip">ZIP archive</a>
+    </div>
+    <div class="install">
+      <code id="install-cmd">curl -fsSL https://dhruv465.github.io/DesignOS/install.sh | sh</code>
+      <button type="button" data-copy="#install-cmd">Copy</button>
+    </div>
+    <p class="fine">This release isn't notarized by Apple yet. If macOS blocks it, open System Settings → Privacy &amp; Security → Open Anyway. The Terminal installer clears the quarantine flag for you — <a href="install.sh">review it first</a>.</p>
+
+    <div class="dl-cards">
+      <article class="dl-card">
+        <img src="assets/extension-128.png" width="40" height="40" alt="">
+        <div>
+          <h3>Browser companion</h3>
+          <p>Save images, pages and links from Chrome, Brave, Edge, Arc and Dia. Captures wait in a local queue if the app is closed.</p>
+          <a class="link" href="https://github.com/dhruv465/DesignOS/releases/latest/download/designos-extension.zip">Download extension</a>
+          <details>
+            <summary>Set it up</summary>
+            <ol>
+              <li>Unzip the download. Open your browser's Extensions page and turn on Developer mode.</li>
+              <li>Choose <b>Load unpacked</b> and select the folder that contains <code>manifest.json</code>.</li>
+              <li>In DesignOS, open Settings → Extension, copy the connection code and paste it into the extension.</li>
+              <li>For X sync, visit Bookmarks while signed in. The first read sets a baseline; new saves sync afterward. Use <b>Import saves</b> for older bookmarks.</li>
+            </ol>
+          </details>
+        </div>
+      </article>
+      <article class="dl-card">
+        <span class="dl-glyph" aria-hidden="true">↻</span>
+        <div>
+          <h3>Coming from Magpie?</h3>
+          <p>Back up your library in Settings → Data first. Install DesignOS once; your library, settings and extension pairing carry over, and future updates arrive in the app.</p>
+          <a class="link" href="https://github.com/dhruv465/DesignOS/blob/main/CHANGELOG.md">Read the changelog</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="foot-brand"><img src="assets/icon-128.png" width="24" height="24" alt=""><b>DesignOS</b><span>Save what catches your eye.</span></div>
+  <nav aria-label="Footer">
+    <a href="https://github.com/dhruv465/DesignOS">GitHub</a>
+    <a href="https://github.com/dhruv465/DesignOS/releases">Releases</a>
+    <a href="https://github.com/dhruv465/DesignOS/blob/main/CHANGELOG.md">Changelog</a>
+    <a href="https://github.com/dhruv465/DesignOS/blob/main/PRIVACY.md">Privacy policy</a>
+    <a href="https://github.com/dhruv465/DesignOS/issues">Support</a>
+  </nav>
+  <p class="legal">Mac and macOS are trademarks of Apple Inc. All artwork on this page is original demo material.</p>
+  <div class="wordmark" aria-hidden="true">DesignOS</div>
+</footer>
+
+<!-- Overlays -->
+<div class="ctx" id="ctx" role="menu" aria-label="Image" hidden>
+  <button type="button" role="menuitem" data-save="image"><img src="assets/icon-128.png" width="16" height="16" alt="">Save image to DesignOS</button>
+  <button type="button" role="menuitem" data-save="page"><img src="assets/icon-128.png" width="16" height="16" alt="">Save page to DesignOS</button>
+  <hr>
+  <button type="button" role="menuitem" aria-disabled="true">Copy image address</button>
+</div>
+
+<dialog id="detail" aria-label="Reference detail">
+  <div class="d-scrim"></div>
+  <div class="d-wrap">
+    <div class="d-media"></div>
+    <div class="d-meta">
+      <h3 class="d-title"></h3>
+      <p class="d-source"></p>
+      <dl>
+        <div><dt>Tags</dt><dd class="d-tags"></dd></div>
+        <div><dt>Colour</dt><dd class="d-colors"></dd></div>
+        <div><dt>Recognised text</dt><dd class="d-text"></dd></div>
+      </dl>
+      <p class="d-hint">Drag the image away, or press Esc, to close.</p>
+    </div>
+    <button class="d-close" type="button" aria-label="Close">×</button>
+  </div>
+</dialog>
+
+<dialog id="palette" aria-label="Command menu">
+  <div class="p-box">
+    <label class="p-search">
+      <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="m16 16 4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="sr-only">Type a command</span>
+      <input id="pq" type="text" placeholder="Jump to, download, copy…" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="true" aria-controls="pl" aria-autocomplete="list">
+      <kbd>esc</kbd>
+    </label>
+    <ul id="pl" role="listbox" aria-label="Commands">
+      <li role="option" data-href="https://github.com/dhruv465/DesignOS/releases/latest/download/DesignOS-arm64.dmg"><span>Download for Mac</span><small>DMG</small></li>
+      <li role="option" data-act="copy"><span>Copy install command</span><small>Terminal</small></li>
+      <li role="option" data-href="#capture"><span>Capture</span><small>Section</small></li>
+      <li role="option" data-href="#find"><span>Find</span><small>Section</small></li>
+      <li role="option" data-href="#explore"><span>Explore</span><small>Section</small></li>
+      <li role="option" data-href="#spaces"><span>Spaces</span><small>Section</small></li>
+      <li role="option" data-href="#context"><span>AI context</span><small>Section</small></li>
+      <li role="option" data-href="#private"><span>Privacy</span><small>Section</small></li>
+      <li role="option" data-act="theme"><span>Appearance</span><small class="theme-now">System</small></li>
+      <li role="option" data-href="https://github.com/dhruv465/DesignOS/releases/latest/download/designos-extension.zip"><span>Download browser extension</span><small>ZIP</small></li>
+      <li role="option" data-href="https://github.com/dhruv465/DesignOS"><span>View on GitHub</span><small>Link</small></li>
+      <li role="option" data-href="https://github.com/dhruv465/DesignOS/blob/main/PRIVACY.md"><span>Privacy policy</span><small>Link</small></li>
+    </ul>
+  </div>
+</dialog>
+
+<div class="drop" aria-hidden="true"><div><b>Drop to save</b><span>It stays in this tab — nothing is uploaded.</span></div></div>
+<div class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
