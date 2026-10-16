@@ -6,6 +6,14 @@ const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
 const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+// Pointer events can arrive several times a frame; handle only the latest one per frame.
+const perFrame = (fn) => {
+  let ev = null;
+  return (e) => {
+    if (!ev) requestAnimationFrame(() => { const x = ev; ev = null; fn(x); });
+    ev = e;
+  };
+};
 
 /* ---------- Motion ---------- */
 
@@ -153,8 +161,8 @@ function hero() {
 
   const squash = new Body({ v: 0 }, (b) => {
     const v = b.get('v');
-    back.style.transform = v ? `scale(${1 + v * 0.015}, ${1 - v * 0.03})` : '';
-    front.style.transform = v ? `scale(${1 + v * 0.05}, ${1 - v * 0.08})` : '';
+    back.style.transform = v ? `scale(${1 - v * 0.015})` : '';
+    front.style.transform = v ? `scale(${1 - v * 0.04})` : '';
   });
   const thump = (amount = 1) => squash.to({ v: 0 }, { response: 0.45, damping: 0.45, velocity: { v: 7 * amount } });
 
@@ -443,15 +451,15 @@ function library(openDetail) {
       setTimeout(() => { it.el.classList.add('up'); it.body.to({ y, s: 1 }, { response: 0.8, damping: 0.86 }); }, 40 + i * 50);
     });
   }, { threshold: 0.05 }).observe(grid);
-  grid.addEventListener('pointermove', (e) => {
+  grid.addEventListener('pointermove', perFrame((e) => {
     const f = e.pointerType === 'mouse' && e.target.closest('.ref');
-    if (!f) return;
+    if (!f || !f.matches(':hover')) return;
     const r = f.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
     f.style.setProperty('--ry', `${(x - 0.5) * 14}deg`);
     f.style.setProperty('--rx', `${(0.5 - y) * 14}deg`);
     f.style.setProperty('--gx', `${x * 100}%`);
     f.style.setProperty('--gy', `${y * 100}%`);
-  });
+  }));
   grid.addEventListener('pointerout', (e) => {
     const f = e.target.closest('.ref');
     if (f && !f.contains(e.relatedTarget)) { f.style.removeProperty('--rx'); f.style.removeProperty('--ry'); }
@@ -819,35 +827,6 @@ function terminal() {
   $('.replay', term).addEventListener('click', play);
 }
 
-function nav() {
-  const bar = $('.nav'), thumb = $('.seg-thumb'), links = $$('.seg a'), secs = links.map((a) => $(a.hash));
-  const tb = new Body({ x: 0, w: 0, o: 0 }, (b) => {
-    thumb.style.transform = `translateX(${b.get('x')}px)`;
-    thumb.style.width = `${b.get('w')}px`;
-    thumb.style.opacity = b.get('o');
-  });
-  let cur = -1, queued = false;
-  const darks = $$('.dark');
-  function update() {
-    queued = false;
-    bar.classList.toggle('scrolled', scrollY > 8);
-    // Over a dark section the bar takes the dark appearance, like a material adapting.
-    bar.classList.toggle('dark', heroDark || darks.some((d) => { const r = d.getBoundingClientRect(); return r.top < 40 && r.bottom > 40; }));
-    let i = -1;
-    secs.forEach((s, j) => { if (s.getBoundingClientRect().top < innerHeight * 0.4) i = j; });
-    if (i === cur) return;
-    cur = i;
-    links.forEach((a, j) => (j === i ? a.setAttribute('aria-current', 'true') : a.removeAttribute('aria-current')));
-    links.forEach((a, j) => a.classList.toggle('on', j === i));
-    if (i < 0) return tb.to({ o: 0 }, { response: 0.3 });
-    const a = links[i], t = { x: a.offsetLeft, w: a.offsetWidth };
-    if (tb.get('o') < 0.05) { tb.set(t); tb.to({ o: 1 }, { response: 0.3 }); }
-    else tb.to({ ...t, o: 1 }, { response: 0.4 });
-  }
-  addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(update); } }, { passive: true });
-  update();
-}
-
 const THEMES = ['system', 'light', 'dark'];
 const themeNow = () => document.documentElement.dataset.theme || 'system';
 const titleCase = (s) => s[0].toUpperCase() + s.slice(1);
@@ -953,14 +932,32 @@ function version() {
 
 /* ---------- Scroll scenes ---------- */
 
+// One rAF loop drives every scene, and only when the page scrolls. Layout is read in
+// measure() alone (load, resize, content size changes); each frame works from cached
+// numbers plus scrollY and writes transforms, opacity and a few custom properties. A
+// scene whose progress has not changed since its last frame writes nothing.
 const scenes = [];
 const ease = (t) => t * t * (3 - 2 * t);
 const span = (p, a, b) => clamp((p - a) / (b - a), 0, 1);
-// Progress through a pinned track: 0 as it pins, 1 as it lets go.
-const pinned = (el, stick = innerHeight) => clamp(-el.getBoundingClientRect().top / Math.max(1, el.offsetHeight - stick), 0, 1);
-let heroDark = false, sceneQueued = false;
-function runScenes() { sceneQueued = false; for (const f of scenes) f(); }
+const docTop = (el) => { let y = 0; for (; el; el = el.offsetParent) y += el.offsetTop; return y; };
+let vh = innerHeight, vw = innerWidth, sceneQueued = false;
+const scene = (measure, draw) => scenes.push({ measure, draw, m: null, last: null });
+function measureScenes() {
+  vh = innerHeight; vw = innerWidth;
+  for (const s of scenes) { s.m = s.measure(); s.last = null; }
+}
+function runScenes() {
+  sceneQueued = false;
+  const y = scrollY;
+  for (const s of scenes) {
+    const key = s.draw.key(y, s.m);
+    if (key === s.last) continue;
+    s.last = key;
+    s.draw(y, s.m);
+  }
+}
 const queueScenes = () => { if (!sceneQueued) { sceneQueued = true; requestAnimationFrame(runScenes); } };
+const drawWith = (key, draw) => Object.assign(draw, { key });
 
 function splitWords(el) {
   const out = [];
@@ -985,62 +982,74 @@ function splitWords(el) {
   return out;
 }
 
-// Scrolling flies the camera into the folio until the screen is the inside of it.
+// Scrolling carries the folio toward you while the page fades to black and the line
+// arrives. The scale is capped and uniform: a bigger zoom only grows GPU textures.
+const DIVE_SCALE = 2.5;
 function dive() {
   const track = $('.dive'), heroEl = $('.hero'), copyBox = $('.hero-copy'), pile = $('.pile'), back = $('.folio-back');
-  const fading = [$('.folio-hint'), $('.scroll-cue')], line = $('.dive-line');
-  scenes.push(() => {
-    const vh = innerHeight, p = pinned(track, heroEl.offsetHeight), F = back.offsetWidth;
-    const ox = back.offsetLeft + F / 2, oy = back.offsetTop + F * 0.3, cy = vh / 2 - heroEl.getBoundingClientRect().top;
-    const end = 1.7 * Math.max(vh / 2 / (0.3 * F), innerWidth / 2 / (0.5 * F), vh / 2 / (0.6 * F));
-    const t = span(p, 0, 0.4);
+  const fading = [$('.folio-hint'), $('.scroll-cue')], line = $('.dive-line'), black = $('.dive-black');
+  const progress = (y, m) => span(y - m.T, 0, m.len);
+  // The viewport centre in hero coordinates, following the sticky hero.
+  const centre = (y, m) => y + vh / 2 - clamp(y + m.stick, m.T, m.T + m.len);
+  scene(() => {
+    const F = back.offsetWidth, H = heroEl.offsetHeight;
+    return { T: docTop(track), len: Math.max(1, track.offsetHeight - H), H, stick: parseFloat(getComputedStyle(heroEl).top) || 0, ox: back.offsetLeft + F / 2, oy: back.offsetTop + F * 0.3 };
+  }, drawWith((y, m) => {
+    const p = progress(y, m);
+    if (!p) return 0;
+    if (clamp(y + m.stick, m.T, m.T + m.len) + m.H < y) return 'gone';
+    return `${p}|${Math.round(centre(y, m))}`;
+  }, (y, m) => {
+    const p = progress(y, m), cy = centre(y, m), t = span(p, 0, 0.4);
     heroEl.classList.toggle('diving', p > 0.01);
-    heroEl.style.setProperty('--p', p);
-    heroEl.style.setProperty('--blk', span(p, 0.8, 0.96));
     copyBox.style.opacity = 1 - t;
     copyBox.style.transform = p ? `translate3d(0, ${-p * 200}px, 0) scale(${1 - t * 0.12})` : '';
-    copyBox.style.filter = t > 0.01 ? `blur(${t * 16}px)` : '';
     for (const f of fading) f.style.opacity = 1 - span(p, 0, 0.1);
-    pile.style.transformOrigin = `${ox}px ${oy}px`;
-    pile.style.transform = p ? `translate3d(0, ${(cy - oy) * ease(span(p, 0, 0.7))}px, 0) scale(${1 + (end - 1) * p ** 2.4})` : '';
+    pile.style.transformOrigin = `${m.ox}px ${m.oy}px`;
+    pile.style.transform = p ? `translate3d(0, ${(cy - m.oy) * ease(span(p, 0, 0.7))}px, 0) scale(${1 + (DIVE_SCALE - 1) * ease(span(p, 0, 0.8))})` : '';
     pile.style.setProperty('--fade', 1 - span(p, 0.1, 0.4));
-    pile.style.opacity = 1 - span(p, 0.84, 0.96);
-    const l = span(p, 0.76, 0.94);
+    black.style.opacity = ease(span(p, 0.5, 0.86));
+    const l = span(p, 0.72, 0.92);
     line.style.opacity = l;
-    line.style.top = `${cy}px`;
-    line.style.transform = `translateY(-50%) scale(${0.9 + 0.1 * ease(l)})`;
-    line.style.filter = l < 1 ? `blur(${(1 - l) * 12}px)` : '';
-    heroDark = p > 0.85 && heroEl.getBoundingClientRect().bottom > 40;
-  });
+    line.style.transform = `translate3d(0, ${cy}px, 0) translateY(-50%) scale(${0.92 + 0.08 * ease(l)})`;
+  }));
 }
 
 // The app window tilts up into place, then the scroll switches it from Library to Spaces.
 function showcase({ pick, all }) {
   const track = $('.show'), stage = $('.show-stage'), win = $('.window');
   let shown = 0;
-  scenes.push(() => {
-    const vh = innerHeight, p = pinned(track), enter = span(vh - track.getBoundingClientRect().top, 0, vh);
-    const a = ease(span(enter + p * 4, 0.35, 1.6));
-    win.style.transform = `perspective(1600px) translateY(${(1 - a) * 90}px) rotateX(${(1 - a) * 32}deg) scale(${0.84 + 0.16 * a + span(p, 0.6, 1) * 0.04})`;
+  const state = (y, m) => {
+    const p = span(y - m.T, 0, m.len), enter = span(vh - (m.T - y), 0, vh);
+    return { p, a: ease(span(enter + p * 4, 0.35, 1.6)) };
+  };
+  scene(() => ({ T: docTop(track), len: Math.max(1, track.offsetHeight - vh) }), drawWith((y, m) => {
+    const { p, a } = state(y, m);
+    return `${p}|${a}`;
+  }, (y, m) => {
+    const { p, a } = state(y, m);
+    win.style.transform = `perspective(1600px) translate3d(0, ${(1 - a) * 90}px, 0) rotateX(${(1 - a) * 32}deg) scale(${0.84 + 0.16 * a + span(p, 0.6, 1) * 0.04})`;
     win.style.opacity = 0.3 + 0.7 * a;
-    stage.style.setProperty('--sp', p);
+    stage.style.setProperty('--sp', p.toFixed(3));
     const want = p < 0.5 ? 0 : 1;
     if (want !== shown) { shown = want; pick(all[want]); }
-  });
+  }));
 }
 
 // A sentence that lights up word by word, with references drifting past at different depths.
 function statement() {
   const track = $('.statement'), words = splitWords($('.words')), drifts = $$('.drift', track);
-  scenes.push(() => {
-    const p = pinned(track), n = words.length, r = track.getBoundingClientRect();
-    words.forEach((w, i) => w.style.setProperty('--o', 0.12 + 0.88 * clamp(p * 1.3 * n - i, 0, 1)));
-    const g = span(innerHeight - r.top, 0, r.height + innerHeight);
-    for (const d of drifts) {
-      const k = +d.style.getPropertyValue('--d');
-      d.style.transform = `translate3d(0, ${(0.5 - g) * k * 280}px, 0) rotate(${(g - 0.5) * k * 16}deg)`;
-    }
-  });
+  const depth = drifts.map((d) => +d.style.getPropertyValue('--d'));
+  const lit = words.map(() => -1);
+  const g = (y, m) => span(vh - (m.T - y), 0, m.H + vh);
+  scene(() => ({ T: docTop(track), H: track.offsetHeight, len: Math.max(1, track.offsetHeight - vh) }), drawWith(g, (y, m) => {
+    const p = span(y - m.T, 0, m.len), n = words.length, k = g(y, m);
+    words.forEach((w, i) => {
+      const o = Math.round((0.12 + 0.88 * clamp(p * 1.3 * n - i, 0, 1)) * 100) / 100;
+      if (o !== lit[i]) { lit[i] = o; w.style.setProperty('--o', o); }
+    });
+    drifts.forEach((d, i) => { d.style.transform = `translate3d(0, ${(0.5 - k) * depth[i] * 280}px, 0) rotate(${(k - 0.5) * depth[i] * 16}deg)`; });
+  }));
 }
 
 function buildRail() {
@@ -1058,31 +1067,35 @@ function buildRail() {
 // Rows slide sideways in opposite directions while the page scrolls down.
 function railScene() {
   const track = $('.rail'), rows = $$('.row'), wrap = $('.rows');
-  scenes.push(() => {
-    const g = span(innerHeight - track.getBoundingClientRect().top, 0, track.offsetHeight);
-    rows.forEach((row, i) => {
-      const range = Math.max(0, row.offsetWidth - wrap.offsetWidth), k = row.dataset.dir === '1' ? g : 1 - g;
-      row.style.transform = `translate3d(${-k * range * (i === 1 ? 0.9 : 1)}px, 0, 0)`;
-    });
-  });
+  const g = (y, m) => span(vh - (m.T - y), 0, m.H);
+  scene(() => ({
+    T: docTop(track), H: track.offsetHeight,
+    ranges: rows.map((row, i) => Math.max(0, row.offsetWidth - wrap.offsetWidth) * (i === 1 ? 0.9 : 1)),
+  }), drawWith(g, (y, m) => {
+    const k = g(y, m);
+    rows.forEach((row, i) => { row.style.transform = `translate3d(${-(row.dataset.dir === '1' ? k : 1 - k) * m.ranges[i]}px, 0, 0)`; });
+  }));
 }
 
 // Dark sections open out to full width as they arrive, and tuck back in as they leave.
 function darkOpen() {
   for (const el of $$('.sec.dark, .show')) {
     const show = el.classList.contains('show');
-    scenes.push(() => {
-      const r = el.getBoundingClientRect(), vh = innerHeight;
-      const q = Math.min(show ? 1 : span(vh - r.top, 0, vh * 0.7), span(r.bottom, 0, vh * 0.7)), k = 1 - ease(q);
-      el.style.setProperty('--ci', `${k * Math.min(innerWidth * 0.05, 64)}px`);
+    const inset = (y, m) => {
+      const top = m.T - y, bottom = m.T + m.H - y;
+      return 1 - ease(Math.min(show ? 1 : span(vh - top, 0, vh * 0.7), span(bottom, 0, vh * 0.7)));
+    };
+    scene(() => ({ T: docTop(el), H: el.offsetHeight }), drawWith(inset, (y, m) => {
+      const k = inset(y, m);
+      el.style.setProperty('--ci', `${k * Math.min(vw * 0.05, 64)}px`);
       el.style.setProperty('--cr', `${k * 44}px`);
-    });
+    }));
   }
   const mark = $('.wordmark');
-  scenes.push(() => {
-    const r = mark.getBoundingClientRect();
-    mark.style.setProperty('--wy', `${(1 - span(innerHeight - r.top, 0, r.height * 0.9)) * 60}%`);
-  });
+  const rise = (y, m) => 1 - span(vh - (m.T - y), 0, m.H * 0.9);
+  scene(() => ({ T: docTop(mark), H: mark.offsetHeight }), drawWith(rise, (y, m) => {
+    mark.style.setProperty('--wy', `${rise(y, m) * 60}%`);
+  }));
 }
 
 // Headlines rise word by word; blocks settle in the first time they scroll into view.
@@ -1107,41 +1120,12 @@ function reveals() {
 
 function spotlight() {
   for (const t of $$('.tile, .dl-card')) {
-    t.addEventListener('pointermove', (e) => {
+    t.addEventListener('pointermove', perFrame((e) => {
       const r = t.getBoundingClientRect();
       t.style.setProperty('--mx', `${e.clientX - r.left}px`);
       t.style.setProperty('--my', `${e.clientY - r.top}px`);
-    });
+    }));
   }
-}
-
-// Mouse wheels glide instead of stepping. Trackpads, keys and touch keep native scrolling.
-function smoothWheel() {
-  if (!matchMedia('(pointer: fine)').matches) return;
-  let target = scrollY, cur = scrollY, running = false, last = 0, wheelFrame = 0;
-  const max = () => document.documentElement.scrollHeight - innerHeight;
-  function step(now) {
-    wheelFrame = 0;
-    if (!running) return;
-    const dt = Math.min((now - last) / 1000, 1 / 30);
-    last = now;
-    cur += (target - cur) * (1 - Math.exp(-dt * 9));
-    if (Math.abs(target - cur) < 0.5) { cur = target; running = false; }
-    scrollTo({ top: cur, behavior: 'instant' });
-    if (running) wheelFrame = requestAnimationFrame(step);
-  }
-  addEventListener('wheel', (e) => {
-    if (e.ctrlKey || Math.abs(e.deltaX) > Math.abs(e.deltaY) || $('dialog[open]') || document.documentElement.style.overflow === 'hidden') return;
-    // Small, fractional deltas come from trackpads, which already glide.
-    if (e.deltaMode === 0 && Math.abs(e.deltaY) < 40 && !Number.isInteger(e.deltaY)) return;
-    e.preventDefault();
-    if (!running) { target = cur = scrollY; }
-    target = clamp(target + e.deltaY * (e.deltaMode === 1 ? 32 : e.deltaMode === 2 ? innerHeight : 1), 0, max());
-    if (!running) { running = true; last = performance.now(); wheelFrame = requestAnimationFrame(step); }
-  }, { passive: false });
-  const stop = () => { running = false; cancelAnimationFrame(wheelFrame); wheelFrame = 0; };
-  addEventListener('keydown', stop);
-  addEventListener('pointerdown', stop);
 }
 
 /* ---------- Start ---------- */
@@ -1156,7 +1140,6 @@ rediscover();
 explore();
 keycaps();
 terminal();
-nav();
 const shots = tabs();
 reveals();
 spotlight();
@@ -1166,9 +1149,12 @@ if (!reduce.matches) {
   statement();
   railScene();
   darkOpen();
-  smoothWheel();
+  const remeasure = () => { measureScenes(); queueScenes(); };
   addEventListener('scroll', queueScenes, { passive: true });
-  addEventListener('resize', queueScenes);
+  addEventListener('resize', remeasure, { passive: true });
+  // Filtering the library, fonts and images all change the page height under the scenes.
+  new ResizeObserver(remeasure).observe(document.body);
+  measureScenes();
   runScenes();
 }
 palette();
