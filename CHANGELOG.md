@@ -1,5 +1,11 @@
 # DesignOS releases
 
+## 0.6.1
+
+Likes in Explore respond instantly. Explore posts open in DesignOS's own viewer and can be added straight to a collection from the right-click menu or the viewer. WordPress sites such as saaslandingpage.com load all their posts, and long text stays inside the details panel. No library format change; the browser extension is unchanged from 0.6.0.
+
+[Release notes and downloads](https://github.com/dhruv465/DesignOS/releases/tag/v0.6.1-designos).
+
 ## Website and distribution — 2026-10-16
 
 - Added interactive DesignOS website on GitHub Pages, with public downloads, privacy, support and browser setup.
