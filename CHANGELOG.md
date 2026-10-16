@@ -2,7 +2,7 @@
 
 ## 0.6.1
 
-Likes in Explore respond instantly. Explore posts open in DesignOS's own viewer and can be added straight to a collection from the right-click menu or the viewer. WordPress sites such as saaslandingpage.com load all their posts, and long text stays inside the details panel. No library format change; the browser extension is unchanged from 0.6.0.
+Likes in Explore respond instantly. Explore posts open in DesignOS's own viewer and can be added straight to a collection from the right-click menu or the viewer. WordPress sites such as saaslandingpage.com load all their posts, and long text stays inside the details panel. The update button shows download, install and restart progress; a site Explore can't follow turns the Add website card into an empty placeholder frame you can stretch; and colour swatches copy their hex code. No library format change; the browser extension is unchanged from 0.6.0.
 
 [Release notes and downloads](https://github.com/dhruv465/DesignOS/releases/tag/v0.6.1-designos).
 
