@@ -120,7 +120,7 @@ Already have a library? Use **Recognize existing text** or **Index existing imag
 
 ### Give coding tools visual context
 
-Open **Settings → AI tools** and copy the generated Claude Code command or MCP configuration for your client. Then try:
+Open **Settings → AI tools** and choose Claude Code, Codex or Other clients, then copy the setup command or configuration. A checkmark and **Copied** confirm success. Then try:
 
 > Find references for a pricing page in my DesignOS library.
 
