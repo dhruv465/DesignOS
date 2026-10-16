@@ -99,11 +99,8 @@ curl -fsSL https://github.com/dhruv465/DesignOS/releases/latest/download/install
 
 The extension works in Chrome, Brave, Edge, Arc and Dia. Update both the app and extension for the new sync, article, video and carousel features:
 
-1. Download the matching [browser extension archive](https://github.com/dhruv465/DesignOS/releases/latest/download/designos-extension.zip) and unzip it.
-2. Open your browser’s Extensions page, enable **Developer mode**, choose **Load unpacked**, and select the unzipped folder containing `manifest.json`.
-3. In **Settings → Extension**, copy the connection code. Paste it into the extension popup and choose **Connect**.
-
-The Chrome Web Store listing is also linked in Settings. Store publication and review are separate from the GitHub release; use the matching archive until the listing is available.
+1. Add [DesignOS from the Chrome Web Store](https://chromewebstore.google.com/detail/designos/degmhkcaeoamggineifpdgneflgajiog).
+2. In **Settings → Extension**, copy the connection code. Paste it into the extension popup and choose **Connect**.
 
 Connect each browser once. The app and extension authenticate each other and encrypt captures over loopback; both need the paired API 2 build. Older unpaired builds cannot deliver captures to a paired app.
 

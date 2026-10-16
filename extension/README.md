@@ -5,11 +5,8 @@ Save pages, images, links, screenshots and supported social posts into your loca
 ## Install and connect
 
 1. Install the [DesignOS Mac app](https://github.com/dhruv465/DesignOS/releases/latest).
-2. Download and unzip the matching [browser extension archive](https://github.com/dhruv465/DesignOS/releases/latest/download/designos-extension.zip).
-3. Open your browser’s Extensions page, enable **Developer mode**, choose **Load unpacked**, and select the folder containing `manifest.json`.
-4. In DesignOS, open **Settings → Extension**, copy the connection code, then paste it into the extension popup and choose **Connect**. Keep the code private.
-
-Chrome Web Store review and publication are separate. The store listing remains an unpublished draft; use the matching release archive until it is available.
+2. Add [DesignOS from the Chrome Web Store](https://chromewebstore.google.com/detail/designos/degmhkcaeoamggineifpdgneflgajiog).
+3. In DesignOS, open **Settings → Extension**, copy the connection code, then paste it into the extension popup and choose **Connect**. Keep the code private.
 
 ## Save and import
 
