@@ -62,11 +62,11 @@ kbd.lit { background: var(--ink); color: var(--bg); }
 .btn-glass:hover { background: rgb(255 255 255 / 0.16); }
 
 /* ---------- Hero ---------- */
-.dive { position: relative; height: calc(max(100svh, 860px) + 150vh); }
-.hero { --F: clamp(156px, 15.5vw, 222px); --fb: max(26px, 4vh); position: relative; isolation: isolate; overflow: clip; position: sticky; top: min(0px, calc(100svh - 860px)); height: max(100svh, 860px); display: grid; align-content: start; justify-items: center; padding: calc(72px + 3vh) var(--pad) 0; text-align: center; }
+.dive { --hero-height: 1000px; position: relative; height: calc(max(100svh, var(--hero-height)) + 150vh); }
+.hero { --F: clamp(156px, 15.5vw, 222px); --fb: max(26px, 4vh); position: relative; isolation: isolate; overflow: clip; position: sticky; top: min(0px, calc(100svh - var(--hero-height))); height: max(100svh, var(--hero-height)); display: grid; align-content: start; justify-items: center; padding: calc(72px + 3vh) var(--pad) 0; text-align: center; }
 .hero::before { content: ''; position: absolute; inset: 0; z-index: -2; background-image: radial-gradient(circle, light-dark(rgb(0 0 0 / 0.1), rgb(255 255 255 / 0.1)) 1px, transparent 1.4px); background-size: 22px 22px; -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 45%, #000 25%, transparent 75%); mask-image: radial-gradient(ellipse 75% 65% at 50% 45%, #000 25%, transparent 75%); }
 .hero::after { content: ''; position: absolute; left: 50%; bottom: -14%; z-index: -1; width: min(980px, 140vw); height: 560px; translate: -50% 0; background: radial-gradient(closest-side at 28% 60%, rgb(91 155 230 / 0.3), transparent), radial-gradient(closest-side at 50% 46%, rgb(165 140 240 / 0.32), transparent), radial-gradient(closest-side at 72% 60%, rgb(242 176 122 / 0.32), transparent); filter: blur(44px); pointer-events: none; }
-.hero-copy { position: relative; z-index: 30; display: grid; justify-items: center; max-width: 900px; }
+.hero-copy { position: relative; z-index: 30; display: grid; justify-items: center; min-width: 0; max-width: 900px; }
 .release { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 28px; padding: 5px 14px 5px 5px; border-radius: 999px; background: var(--glass); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); box-shadow: 0 0 0 0.5px var(--glass-edge); font-size: 0.8125rem; font-weight: 500; color: var(--ink-2); text-decoration: none; transition: box-shadow 0.2s; }
 .release:hover { box-shadow: 0 0 0 0.5px var(--glass-edge), 0 6px 20px -8px rgb(0 0 0 / 0.2); }
 .release span { padding: 3px 9px; border-radius: 999px; background: var(--ink); color: var(--bg); font-size: 0.75rem; font-weight: 600; }
@@ -76,6 +76,10 @@ h1 { font-family: var(--serif); font-weight: 500; font-size: clamp(3.1rem, 7.4vw
 .lede { max-width: 33em; margin-top: 26px; font-size: clamp(1.0625rem, 1.55vw, 1.25rem); color: var(--ink-2); text-wrap: pretty; }
 .cta { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 32px; }
 .meta { margin-top: 18px; font-size: 0.8125rem; color: var(--muted); }
+.hero-install { width: min(100%, 620px); min-width: 0; margin-top: 22px; font-size: 0.8125rem; color: var(--ink-2); }
+.hero-install .install { margin-top: 10px; text-align: left; }
+.hero-install .install button { color: #fff; }
+.hero-install .install-note { margin-top: 10px; color: var(--muted); }
 
 /* The pile: references you can grab, flick and throw into the folio. */
 .pile { --fade: 1; position: absolute; inset: 0; z-index: 40; pointer-events: none; }
@@ -93,6 +97,7 @@ h1 { font-family: var(--serif); font-weight: 500; font-size: clamp(3.1rem, 7.4vw
 .folio-hint::before { content: ''; position: absolute; left: -26px; top: 0.35em; width: 18px; height: 18px; border-left: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; border-bottom-left-radius: 14px; opacity: 0.6; }
 .folio-hint small { font: 400 0.8125rem/1.4 var(--sans); color: var(--muted); }
 @media (max-width: 640px) {
+  .dive { --hero-height: 1200px; }
   .hero { --F: 150px; padding-top: 64px; }
   .folio-hint { left: 50%; bottom: calc(var(--fb) + var(--F) + 10px); translate: -50% 0; max-width: none; text-align: center; font-size: 0.9375rem; white-space: nowrap; }
   .folio-hint::before, .folio-hint small { display: none; }
@@ -634,6 +639,7 @@ details ol { display: grid; gap: 6px; margin-top: 10px; padding-left: 1.2em; lis
   html { scroll-behavior: auto; }
   .dive, .show, .statement, .rail { height: auto; }
   .hero, .show-stage, .statement-stage, .rail-stage { position: relative; height: auto; min-height: 100svh; }
+  .hero { top: 0; min-height: max(100svh, var(--hero-height)); }
   .rows { overflow-x: auto; width: 100%; margin: 0; rotate: none; }
   .js .rv, .js .split .w, .js .grid.pre .ref { opacity: 1; translate: none; }
   .dive-black, .dive-line { display: none; }
